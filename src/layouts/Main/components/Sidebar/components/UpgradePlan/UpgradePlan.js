@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Button, colors } from '@material-ui/core';
+import {useDispatch} from 'react-redux';
+import {isProviderUser } from '../../../../../../store/modules/user/actions'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,9 +31,13 @@ const useStyles = makeStyles(theme => ({
 
 const UpgradePlan = props => {
   const { className, ...rest } = props;
-
+  const dispatch = useDispatch()
   const classes = useStyles();
 
+
+  function handleProviderRequest(boolean) {
+    dispatch(isProviderUser(boolean))
+  }
   return (
     <div
       {...rest}
@@ -39,7 +45,7 @@ const UpgradePlan = props => {
     >
       <div className={classes.media}>
         <img
-          alt="Upgrade to PRO"
+          alt="Seja um funcionário"
           src="/images/undraw_resume_folder_2_arse.svg"
         />
       </div>
@@ -49,23 +55,23 @@ const UpgradePlan = props => {
           gutterBottom
           variant="h6"
         >
-          Upgrade to PRO
+          Seja um funcionário
         </Typography>
         <Typography
           align="center"
           variant="body2"
         >
-          Upgrade to Devias Kit PRO and get even more components
+          Seja um funcionário e comece a gerir seu agendamentos
         </Typography>
       </div>
       <div className={classes.actions}>
         <Button
           color="primary"
           component="a"
-          href="https://devias.io/products/devias-kit-pro"
+          onClick={() => handleProviderRequest(true)}
           variant="contained"
         >
-          Upgrade
+          Comece agora
         </Button>
       </div>
     </div>

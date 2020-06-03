@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import api from '../../../../services/api'
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
+import defaultAvatar from '../../../../assets/defaultAvatar.png'
 import {
   Card,
-  CardActions,
   CardContent,
   Avatar,
   Checkbox,
@@ -16,7 +17,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TablePagination
 } from '@material-ui/core';
 
 import { getInitials } from 'helpers';
@@ -47,9 +47,17 @@ const UsersTable = props => {
   const classes = useStyles();
 
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
+  /* const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0); */
+  const [scheduling, setScheduling] = useState([])
+  useEffect(() => {
+    api.get('scheduling').then((response) => {   
+      setScheduling(response.data)
+    });
+  }, []);
 
+
+  /* 
   const handleSelectAll = event => {
     const { users } = props;
 
@@ -63,7 +71,7 @@ const UsersTable = props => {
 
     setSelectedUsers(selectedUsers);
   };
-
+ */
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedUsers.indexOf(id);
     let newSelectedUsers = [];
@@ -83,14 +91,14 @@ const UsersTable = props => {
 
     setSelectedUsers(newSelectedUsers);
   };
-
+  /* 
   const handlePageChange = (event, page) => {
     setPage(page);
   };
 
   const handleRowsPerPageChange = event => {
     setRowsPerPage(event.target.value);
-  };
+  }; */
 
   return (
     <Card
@@ -103,37 +111,26 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>Name</TableCell>
+                  <TableCell padding="checkbox" />
+                  <TableCell>Nome</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Phone</TableCell>
-                  <TableCell>Registration date</TableCell>
+                  <TableCell>Serviço</TableCell>
+                  <TableCell>Data do agendamento</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.slice(0, rowsPerPage).map(user => (
+                {scheduling.map(scheduling => (
                   <TableRow
                     className={classes.tableRow}
                     hover
-                    key={user.id}
-                    selected={selectedUsers.indexOf(user.id) !== -1}
+                    key={scheduling.id}
+                    selected={selectedUsers.indexOf(scheduling.id) !== -1}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
+                        checked={selectedUsers.indexOf(scheduling.id) !== -1}
                         color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
+                        onChange={event => handleSelectOne(event, scheduling.id)}
                         value="true"
                       />
                     </TableCell>
@@ -141,21 +138,19 @@ const UsersTable = props => {
                       <div className={classes.nameContainer}>
                         <Avatar
                           className={classes.avatar}
-                          src={user.avatarUrl}
+                          src={scheduling.avatar ?scheduling.avatar : defaultAvatar}
                         >
-                          {getInitials(user.name)}
+                          {getInitials(scheduling.user.name)}
                         </Avatar>
-                        <Typography variant="body1">{user.name}</Typography>
+                        <Typography variant="body1">{scheduling.services.user.name}</Typography>
                       </div>
                     </TableCell>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{scheduling.services.user.email}</TableCell>
                     <TableCell>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
+                      {scheduling.services.services.name}
                     </TableCell>
-                    <TableCell>{user.phone}</TableCell>
                     <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
+                      {moment(scheduling.date).format('DD/MM/YYYY')}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -164,17 +159,6 @@ const UsersTable = props => {
           </div>
         </PerfectScrollbar>
       </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={users.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
     </Card>
   );
 };

@@ -4,14 +4,11 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-
+import {Today, Timer} from '@material-ui/icons';
+import {useSelector} from 'react-redux'
 import { Profile, SidebarNav, UpgradePlan } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
-
+  const profile = useSelector(state => state.user.profile)
   const classes = useStyles();
 
   const pages = [
@@ -49,37 +46,27 @@ const Sidebar = props => {
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
+      title: 'Agendamento',
       href: '/users',
-      icon: <PeopleIcon />
+      icon: <Today />
     },
     {
-      title: 'Products',
-      href: '/products',
+      title: 'Serviços',
+      href: '/services',
       icon: <ShoppingBasketIcon />
     },
     {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
+      title: 'Horários',
+      href: '/businessHours',
+      icon: <Timer />
     },
     {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
-    },
-    {
-      title: 'Account',
+      title: 'Conta',
       href: '/account',
       icon: <AccountBoxIcon />
     },
     {
-      title: 'Settings',
+      title: 'Configurações',
       href: '/settings',
       icon: <SettingsIcon />
     }
@@ -103,7 +90,8 @@ const Sidebar = props => {
           className={classes.nav}
           pages={pages}
         />
-        <UpgradePlan />
+        {profile.is_provider == null ? <div/> :  <UpgradePlan/>} 
+        <UpgradePlan/>
       </div>
     </Drawer>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
+import {useSelector} from 'react-redux'
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -11,7 +11,6 @@ import {
   Typography,
   Divider,
   Button,
-  LinearProgress
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 const AccountProfile = props => {
   const { className, ...rest } = props;
-
+  const profile = useSelector(state => state.user.profile)
   const classes = useStyles();
 
   const user = {
@@ -57,23 +56,23 @@ const AccountProfile = props => {
           <div>
             <Typography
               gutterBottom
-              variant="h2"
+              variant="h3"
             >
-              John Doe
+              {profile.name}
             </Typography>
             <Typography
               className={classes.locationText}
               color="textSecondary"
               variant="body1"
             >
-              {user.city}, {user.country}
+              {profile.email}   
             </Typography>
             <Typography
               className={classes.dateText}
               color="textSecondary"
               variant="body1"
             >
-              {moment().format('hh:mm A')} ({user.timezone})
+              {profile.bio}
             </Typography>
           </div>
           <Avatar
@@ -81,13 +80,7 @@ const AccountProfile = props => {
             src={user.avatar}
           />
         </div>
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-          <LinearProgress
-            value={70}
-            variant="determinate"
-          />
-        </div>
+        
       </CardContent>
       <Divider />
       <CardActions>
@@ -96,9 +89,9 @@ const AccountProfile = props => {
           color="primary"
           variant="text"
         >
-          Upload picture
+          Atualizar foto
         </Button>
-        <Button variant="text">Remove picture</Button>
+        <Button variant="text">Remover foto</Button>
       </CardActions>
     </Card>
   );

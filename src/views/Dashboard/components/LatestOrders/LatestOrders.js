@@ -45,9 +45,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const statusColors = {
-  delivered: 'success',
-  pending: 'info',
-  refunded: 'danger'
+  'Concluído': 'success',
+  'A fazer': 'danger'
 };
 
 const LatestOrders = props => {
@@ -69,10 +68,10 @@ const LatestOrders = props => {
             size="small"
             variant="outlined"
           >
-            New entry
+            Agendar
           </Button>
         }
-        title="Latest Orders"
+        title="Agendamentos"
       />
       <Divider />
       <CardContent className={classes.content}>
@@ -81,8 +80,7 @@ const LatestOrders = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Order Ref</TableCell>
-                  <TableCell>Customer</TableCell>
+                  <TableCell>Cliente</TableCell>
                   <TableCell sortDirection="desc">
                     <Tooltip
                       enterDelay={300}
@@ -92,7 +90,7 @@ const LatestOrders = props => {
                         active
                         direction="desc"
                       >
-                        Date
+                        Data
                       </TableSortLabel>
                     </Tooltip>
                   </TableCell>
@@ -105,7 +103,7 @@ const LatestOrders = props => {
                     hover
                     key={order.id}
                   >
-                    <TableCell>{order.ref}</TableCell>
+                   
                     <TableCell>{order.customer.name}</TableCell>
                     <TableCell>
                       {moment(order.createdAt).format('DD/MM/YYYY')}
@@ -134,7 +132,7 @@ const LatestOrders = props => {
           size="small"
           variant="text"
         >
-          View all <ArrowRightIcon />
+          Veja mais <ArrowRightIcon />
         </Button>
       </CardActions>
     </Card>

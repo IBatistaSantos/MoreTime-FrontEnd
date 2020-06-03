@@ -24,16 +24,16 @@ const Footer = props => {
         &copy;{' '}
         <Link
           component="a"
-          href="https://devias.io/"
+          href="#"
           target="_blank"
         >
-          Devias IO
+          More Time
         </Link>
-        . 2019
+        . 2020
       </Typography>
       <Typography variant="caption">
-        Created with love for the environment. By designers and developers who
-        love to work together in offices!
+        Criado para matéria Lab. de Software do curso Sistemas de Informação. 
+        App para funcionários autônomos que atuam na setor de beleza
       </Typography>
     </div>
   );

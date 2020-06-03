@@ -1,17 +1,15 @@
-import React from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import {useDispatch} from 'react-redux'
 import { makeStyles } from '@material-ui/styles';
+import {isProviderUser } from '../../../../store/modules/user/actions'
+
 import {
   Card,
   CardHeader,
-  CardContent,
   CardActions,
-  Grid,
   Divider,
-  FormControlLabel,
-  Checkbox,
-  Typography,
   Button
 } from '@material-ui/core';
 
@@ -25,8 +23,12 @@ const useStyles = makeStyles(() => ({
 
 const Notifications = props => {
   const { className, ...rest } = props;
-
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  function handleProviderRequest(boolean ) {
+    dispatch(isProviderUser(boolean))
+  }
 
   return (
     <Card
@@ -35,106 +37,19 @@ const Notifications = props => {
     >
       <form>
         <CardHeader
-          subheader="Manage the notifications"
-          title="Notifications"
+          subheader="Você pode deixar de ser funcionário,
+           fique despreocupado pois guarderemos todo seu progresso para quando voltar"
+          title="Deixa de ser funcionário"
         />
         <Divider />
-        <CardContent>
-          <Grid
-            container
-            spacing={6}
-            wrap="wrap"
-          >
-            <Grid
-              className={classes.item}
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
-                Notifications
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Email"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Push Notifications"
-              />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Text Messages"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Phone calls"
-              />
-            </Grid>
-            <Grid
-              className={classes.item}
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
-                Messages
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Email"
-              />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Push Notifications"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Phone calls"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
         <Divider />
         <CardActions>
           <Button
-            color="primary"
-            variant="outlined"
+            color="secondary"
+            onClick={() => handleProviderRequest(false)}
+            variant="contained"
           >
-            Save
+            Desativar
           </Button>
         </CardActions>
       </form>

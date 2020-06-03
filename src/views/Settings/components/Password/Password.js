@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
+import {useDispatch} from 'react-redux'
+import { passwordProfileUser } from '../../../../store/modules/user/actions'
 import {
   Card,
   CardHeader,
@@ -18,7 +20,7 @@ const useStyles = makeStyles(() => ({
 
 const Password = props => {
   const { className, ...rest } = props;
-
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const [values, setValues] = useState({
@@ -32,7 +34,9 @@ const Password = props => {
       [event.target.name]: event.target.value
     });
   };
-
+  function handlePasswordUser({password}) {
+    dispatch(passwordProfileUser(password))
+  }
   return (
     <Card
       {...rest}
@@ -40,14 +44,14 @@ const Password = props => {
     >
       <form>
         <CardHeader
-          subheader="Update password"
-          title="Password"
+          subheader="Atualize sua senha"
+          title="Senha"
         />
         <Divider />
         <CardContent>
           <TextField
             fullWidth
-            label="Password"
+            label="Senha"
             name="password"
             onChange={handleChange}
             type="password"
@@ -56,7 +60,7 @@ const Password = props => {
           />
           <TextField
             fullWidth
-            label="Confirm password"
+            label="Confirme sua senha"
             name="confirm"
             onChange={handleChange}
             style={{ marginTop: '1rem' }}
@@ -69,9 +73,10 @@ const Password = props => {
         <CardActions>
           <Button
             color="primary"
+            onClick={() => handlePasswordUser(values)}
             variant="outlined"
           >
-            Update
+        Atualizar senha
           </Button>
         </CardActions>
       </form>
