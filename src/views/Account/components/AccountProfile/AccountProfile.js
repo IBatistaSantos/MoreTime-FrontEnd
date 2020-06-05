@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {useSelector} from 'react-redux'
 import { makeStyles } from '@material-ui/styles';
+import DefaultAvatar from '../../../../assets/defaultAvatar.png'
+
 import {
   Card,
   CardActions,
@@ -38,14 +40,6 @@ const AccountProfile = props => {
   const profile = useSelector(state => state.user.profile)
   const classes = useStyles();
 
-  const user = {
-    name: 'Shen Zhi',
-    city: 'Los Angeles',
-    country: 'USA',
-    timezone: 'GTM-7',
-    avatar: '/images/avatars/avatar_11.png'
-  };
-
   return (
     <Card
       {...rest}
@@ -77,7 +71,7 @@ const AccountProfile = props => {
           </div>
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={profile.avatar ? profile.avatar :  DefaultAvatar}
           />
         </div>
         

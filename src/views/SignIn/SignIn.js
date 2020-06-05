@@ -118,7 +118,12 @@ const useStyles = makeStyles(theme => ({
   },
   signInButton: {
     margin: theme.spacing(2, 0)
-  }
+  },
+  forgotPassword: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    alignItems: 'center'
+  },
 }));
 
 const SignIn = props => {
@@ -236,6 +241,14 @@ const SignIn = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
+                <Link 
+                  className={classes.forgotPassword}
+                  component={RouterLink}
+                  to="/forgot-password"
+                  variant="h6"
+                >
+                   Esquece minha senha
+                </Link>
                 <Button
                   className={classes.signInButton}
                   color="primary"
@@ -244,7 +257,7 @@ const SignIn = props => {
                   size="large"
                   type="submit"
                   variant="contained"
-                >Fro
+                >
                   Entrar
                 </Button>
                 <Typography

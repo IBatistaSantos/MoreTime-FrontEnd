@@ -183,7 +183,7 @@ const SignUp = props => {
 
   function handleSignUp(data){
     const { name, email, bio, password } = data
-    dispatch(signUpRequest(name, bio, email, password))
+    dispatch(signUpRequest(name,email,bio,password))
   }
 
   const hasError = field =>
@@ -286,14 +286,6 @@ const SignUp = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
-                <Link 
-                  className={classes.forgotPassword}
-                  component={RouterLink}
-                  to="/sign-in"
-                  variant="h6"
-                >
-                   Esquece minha senha
-                </Link>
                 <Button
                   className={classes.signUpButton}
                   color="primary"

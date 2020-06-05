@@ -14,7 +14,8 @@ import { Provider } from 'react-redux';
 import history from './services/history';
 import { store, persistor } from './store';
 
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 validate.validators = {
   ...validate.validators,
@@ -30,6 +31,7 @@ export default class App extends Component {
             <Router history={history}>
               <Routes />
             </Router>
+            <ToastContainer />
           </ThemeProvider>
         </PersistGate>
       </Provider>

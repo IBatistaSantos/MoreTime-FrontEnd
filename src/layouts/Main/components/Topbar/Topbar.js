@@ -2,12 +2,13 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux'
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InputIcon from '@material-ui/icons/Input';
 import logo from '../../../../assets/lg.png';
-
+import {signOut} from '../../../../store/modules/auth/actions'
 const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none'
@@ -22,9 +23,12 @@ const useStyles = makeStyles(theme => ({
 
 const Topbar = props => {
   const { className, onSidebarOpen, ...rest } = props;
-
+  const dispatch = useDispatch();
   const classes = useStyles();
 
+  function handleSignOut() {
+    dispatch(signOut())
+  }
 
   return (
     <AppBar
@@ -43,6 +47,7 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
+            onClick={handleSignOut}
           >
             <InputIcon />
           </IconButton>

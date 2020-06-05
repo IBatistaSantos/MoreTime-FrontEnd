@@ -36,7 +36,7 @@ const Profile = props => {
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        src={profile.avatar ? profile.avatar :  <DefaultAvatar/>}
+        src={profile.avatar ? profile.avatar :  DefaultAvatar}
         to="/settings"
       />
       <Typography

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import Background from '../../assets/auth1.jpg';
 import {useDispatch} from 'react-redux'
 import { forgotPassword } from '../../store/modules/auth/actions';
-import {Form} from '@rocketseat/unform'
+import {Form } from '@rocketseat/unform'
 import {
   Grid,
   Button,
@@ -140,20 +140,13 @@ const ForgotPassword = props => {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
+        [event.target.name]: event.target.value
       },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
     }));
   };
 
   function handleForgotPassword (data){
-    const {email} = data
+    const { email } = data
     dispatch(forgotPassword(email))
   } 
   
@@ -196,12 +189,11 @@ const ForgotPassword = props => {
               >
                 <Typography
                   className={classes.title}
-                  variant="h2"
+                  variant="h3"
                 >
                  Esqueceu sua senha ? Não se preocupe, 
-                 informe seu email cadastrado iremos mandar um link para resetar sua senha
+                 informe seu email cadastrado iremos mandar um link para restaurar sua senha
                 </Typography>
-           
                
                 <TextField
                   className={classes.textField}

@@ -100,7 +100,7 @@ export default function ServiceEmployeee() {
 
 
   useEffect(() => {
-    api.get('allServiceUser').then((response) => {   
+    api.get('serviceEmployee').then((response) => {   
       setServiceEmployee([...response.data])
     });
   }, []);
@@ -123,23 +123,21 @@ export default function ServiceEmployeee() {
               value={service.id}
             >{service.name}</MenuItem>   
           ))}
-        </Select>
-      
-      
+        </Select> 
     },   
     { title: 'Preço', field: 'price' },
-    { title: 'Duração', field: 'duration'},    
+    { title: 'Informação', field: 'info'},    
   ];
 
   function handleAddServices(serviceEmployeee) {
-    const {price, duration} = serviceEmployeee
+    const {price, info} = serviceEmployeee
     const service_id = serviceSelect
-    const info = {
+    const data = {
       price,
-      duration,
+      info,
       service_id: service_id
     } 
-    api.post('/selfEmployed/services', info).then((response) =>{
+    api.post('/serviceEmployee', data).then((response) =>{
       setServiceEmployee([...servicesEmployee, response.data])
       setserviceSelect('')
     })
@@ -147,10 +145,10 @@ export default function ServiceEmployeee() {
   }
 
   function handleUpdateServices(data) {
-    const {id, price, duration} = data
-    api.put(`selfEmployed/services/${id}`, {
+    const {id, price, info} = data
+    api.put(`serviceEmployee/${id}`, {
       price,
-      duration
+      info    
     }).then((response)=> { 
       const index = servicesEmployee.find(servicesEmployee => servicesEmployee.id === response.data.id)
       const newState = [...servicesEmployee]  
@@ -161,7 +159,7 @@ export default function ServiceEmployeee() {
   }
 
   function handleDeleteServices({id}) {
-    api.delete(`selfEmployed/services/${id}`).then(() => {
+    api.delete(`serviceEmployee/${id}`).then(() => {
       const index = servicesEmployee.find(serviceEmployee => serviceEmployee.id == id) 
       const data = [...servicesEmployee]  
       data.splice(data.indexOf(index),1)
@@ -175,15 +173,15 @@ export default function ServiceEmployeee() {
       <Typography variant="h1">Meus serviços</Typography> 
     </div>
     
-    <MaterialTable
+    <MaterialTable 
       columns={columns}
       data=
-        {servicesEmployee.map((service) => (
+        {servicesEmployee.map((serviceEmployee) => (
           {
-            id: service.id,
-            service:service.services.name, 
-            price: service.price,
-            duration: service.duration
+            id: serviceEmployee.id,
+            service:serviceEmployee.service.name, 
+            price: serviceEmployee.price,
+            info: serviceEmployee.info
           }
         ))}
       editable={{

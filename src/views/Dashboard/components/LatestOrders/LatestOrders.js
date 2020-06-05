@@ -68,7 +68,7 @@ const LatestOrders = props => {
             size="small"
             variant="outlined"
           >
-            Agendar
+            Novo Agendamento
           </Button>
         }
         title="Agendamentos"

@@ -47,7 +47,7 @@ const Sidebar = props => {
     },
     {
       title: 'Agendamento',
-      href: '/users',
+      href: '/appointments',
       icon: <Today />
     },
     {
@@ -90,8 +90,7 @@ const Sidebar = props => {
           className={classes.nav}
           pages={pages}
         />
-        {profile.is_provider == null ? <div/> :  <UpgradePlan/>} 
-        <UpgradePlan/>
+        {profile.is_provider ?   <div/>  :  <UpgradePlan/>} 
       </div>
     </Drawer>
   );

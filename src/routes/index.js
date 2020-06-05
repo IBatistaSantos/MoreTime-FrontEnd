@@ -14,6 +14,7 @@ import {
   SignUp as SignUpView,
   SignIn as SignInView,
   NotFound as NotFoundView,
+  Appointments as AppointmentView,
   ForgotPassword as ForgotPasswordView,
   ResetePassword as ResetPasswordView
 } from '../views';
@@ -29,20 +30,30 @@ const Routes = () => {
       <Route
         component={DashboardView}
         exact
+        isPrivate
         layout={MainLayout}
         path="/dashboard"
       />
       <Route
         component={UserListView}
         exact
+        isPrivate
         layout={MainLayout}
-        path="/users"
+        path="/appointments"
       />
       <Route
         component={ServiceEmployeeView}
         exact
+        isPrivate
         layout={MainLayout}
         path="/services"
+      />
+      <Route
+        component={AppointmentView}
+        exact
+        isPrivate
+        layout={MainLayout}
+        path="/new-appointment"
       />
       <Route
         component={ForgotPasswordView}
@@ -59,18 +70,21 @@ const Routes = () => {
       <Route
         component={BusinessHoursView}
         exact
+        isPrivate
         layout={MainLayout}
         path="/businessHours"
       />
       <Route
         component={AccountView}
         exact
+        isPrivate
         layout={MainLayout}
         path="/account"
       />
       <Route
         component={SettingsView}
         exact
+        isPrivate
         layout={MainLayout}
         path="/settings"
       />
