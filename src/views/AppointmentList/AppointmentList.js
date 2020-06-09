@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 
-import { UsersToolbar, UsersTable } from './components';
-import mockData from './data';
+import { AppointmentToolbar, AppointmentTable } from './components';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,13 +16,11 @@ const useStyles = makeStyles(theme => ({
 const UserList = () => {
   const classes = useStyles();
 
-  const [users] = useState(mockData);
-
   return (
     <div className={classes.root}>
-      <UsersToolbar />
+      <AppointmentToolbar />
       <div className={classes.content}>
-        <UsersTable users={users} />
+        <AppointmentTable/>
       </div>
     </div>
   );

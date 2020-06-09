@@ -1,10 +1,11 @@
 import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import api from '../../../src/services/api';
+import {toast} from 'react-toastify'
 import { makeStyles } from '@material-ui/styles';
-import {Select,Grid, MenuItem, Paper, ButtonBase , Typography} from '@material-ui/core'
+import {Select,Grid,TextField, DialogActions, Button, MenuItem,FormControl, Paper, ButtonBase , Typography, Dialog, DialogTitle,DialogContent,DialogContentText } from '@material-ui/core'
 import defaultAvatar from '../../assets/defaultAvatar.png'
-
+import {Form} from '@rocketseat/unform'
 const useStyles = makeStyles(theme => ({
   
   row: {
@@ -31,13 +32,42 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
     maxHeight: '100%',
   },
+  form: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
 }));
 
 
 export default function AccountHours()  {
   const [services, setServices] = useState([])
+  const [employees, setEmployees] = useState([])
   const classes = useStyles();
-  
+  const [open, setOpen] = useState(false);
+  const [serviceEmployee, setServiceEmployee] = useState('')
+  const [formState, setFormState] = useState({
+    values: {},
+  });
+
+  const handleChangeForm = event => {
+    event.persist();
+
+    setFormState(formState => ({
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.value
+      },
+    }));
+  };
+
+  const handleClickOpen = (data) => {
+    setServiceEmployee(Number(data))
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     api.get('services').then((response) => {   
@@ -46,10 +76,28 @@ export default function AccountHours()  {
   }, []);
   
   const handleChange = (event) => {
-    //setSpacing(Number(event.target.value));
+    api.get(`services/${event.target.value}`).then((response) => {
+      setEmployees(response.data);
+    })
   }
 
-  
+  function handleAddAppointment(data) {
+    const {date, timetable} = data
+    data = {
+      date,
+      timetable,
+      service_employee_id: serviceEmployee
+    }
+
+    api.post('scheduling', data).then(() => {
+      toast.success('Agendamento feito com sucesso')
+      setServiceEmployee('')
+      setFormState([])
+      setOpen(false)
+    })
+    
+    
+  }
   return (
     <>
       <div className={classes.row}>
@@ -66,92 +114,150 @@ export default function AccountHours()  {
         </Select>
       </div>
      
-        <div className={classes.root}>
-          <Grid
-            className={classes.root}
-            container
-            spacing={3}
-          >
-            {[0, 1, ].map((value) => (
-              <Grid
-                item
-                key={value}
-                sm={6}
-                xs={12}
+      <div className={classes.root}>
+        <Grid
+          className={classes.root}
+          container
+          spacing={3}
+        >
+          {employees.map((employee) => (
+            <Grid
+              item
+              key={employee.id}
+              sm={6}
+              xs={12}
+            >
+              <Paper
+                className={classes.paper}
               >
-                <Paper
-                  className={classes.paper}
+                <Grid
+                  container
+                  spacing={2}
                 >
+                  <Grid item>
+                    <ButtonBase className={classes.image}>
+                      <img
+                        alt="complex"
+                        className={classes.img}
+                        src={defaultAvatar}
+                      />
+                    </ButtonBase>
+                  </Grid>
                   <Grid
                     container
-                    spacing={2}
+                    item
+                    sm
+                    xs={12}
                   >
-                    <Grid item>
-                      <ButtonBase className={classes.image}>
-                        <img
-                          alt="complex"
-                          className={classes.img}
-                          src={defaultAvatar}
-                        />
-                      </ButtonBase>
-                    </Grid>
                     <Grid
                       container
+                      direction="column"
                       item
-                      sm
-                      xs={12}
+                      spacing={2}
+                      xs
                     >
                       <Grid
-                        container
-                        direction="column"
                         item
-                        spacing={2}
                         xs
                       >
-                        <Grid
-                          item
-                          xs
+                        <Typography
+                          gutterBottom
+                          variant="subtitle1"
                         >
-                          <Typography
-                            gutterBottom
-                            variant="subtitle1"
-                          >
-                  Israel Batista
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                          >
-                 Biografia do Profissional
-                          </Typography>
-                          <Typography
-                            color="textSecondary"
-                            variant="body2"
-                          >
-                 Info do serviço
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography
-                            style={{ cursor: 'pointer' }}
-                            variant="body2"
-                          >
-                  Agendar
-                          </Typography>
-                        </Grid>
+                          {employee.employee.name}
+                        </Typography>
+                        <Typography
+                          gutterBottom
+                          variant="body2"
+                        >
+                          {employee.employee.bio}
+                        </Typography>
+                        <Typography
+                          color="textSecondary"
+                          variant="body2"
+                        >
+                          {employee.info}
+                        </Typography>
                       </Grid>
                       <Grid item>
-                        <Typography variant="subtitle1">R$19.00</Typography>
+                        <Typography
+                          onClick={() => handleClickOpen(employee.id)}
+                          style={{ cursor: 'pointer' }}
+                          variant="body2"
+                        >
+                  Agendar
+                        </Typography>
                       </Grid>
                     </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle1">{Intl.NumberFormat('pt-Br', { style: 'currency', currency:'BRL'})
+                        .format(employee.price)}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
          
-        </div>    
-     
+      </div>    
+      
+      <Dialog
+        aria-labelledby="appointments-date-hours"
+        maxWidth="sm"
+        onClose={handleClose}
+        open={open}
+      >
+        <DialogTitle id="appointments-date-hours">Data e Horário do Agendamento</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Informe a data e horário do agendamento e verificamos a disponibilidade
+          </DialogContentText>
+          <Form
+            className={classes.form}
+            onSubmit={handleAddAppointment}
+          >
+            <FormControl className={classes.formControl}>
+             
+              <TextField    
+                className={classes.textField}
+                id="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                label="Data do Agendamento"
+                name="date"
+                onChange={handleChangeForm}
+                type="date"
+              />
+
+              <TextField
+                className={classes.textField}
+                id="time"
+                label="Horário do Agendamento"
+                name="timetable"
+                onChange={handleChangeForm}
+                type="time"
+              />
+            </FormControl>
+          </Form>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="primary"
+            onClick={handleClose}
+          >
+            Fechar
+          </Button>
+          <Button
+            color="primary"
+            onClick={() => handleAddAppointment(formState.values)}
+          >
+            Agendar
+          </Button>
+        </DialogActions>
+      </Dialog>
       </>
   );
 }

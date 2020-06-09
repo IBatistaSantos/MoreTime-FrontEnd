@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import moment from 'moment';
+import api from '../../../../services/api'
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -16,15 +16,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
-  TableSortLabel
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-
-import mockData from './data';
-import { StatusBullet } from 'components';
-
-const useStyles = makeStyles(theme => ({
+import history from '../../../../services/history'
+const useStyles = makeStyles(() => ({
   root: {},
   content: {
     padding: 0
@@ -36,25 +31,26 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center'
   },
-  status: {
-    marginRight: theme.spacing(1)
-  },
+  
   actions: {
     justifyContent: 'flex-end'
   }
 }));
 
-const statusColors = {
-  'Concluído': 'success',
-  'A fazer': 'danger'
-};
+
 
 const LatestOrders = props => {
   const { className, ...rest } = props;
-
+  const [appointments, setAppointments] = useState([])
   const classes = useStyles();
 
-  const [orders] = useState(mockData);
+
+  
+  useEffect(() => {
+    api.get('appointment/today').then((response) => {   
+      setAppointments(response.data);     
+    });
+  }, []);
 
   return (
     <Card
@@ -65,13 +61,14 @@ const LatestOrders = props => {
         action={
           <Button
             color="primary"
+            onClick={() => history.push('/new-appointment')}
             size="small"
             variant="outlined"
           >
             Novo Agendamento
           </Button>
         }
-        title="Agendamentos"
+        title="Agendamento do dia"
       />
       <Divider />
       <CardContent className={classes.content}>
@@ -81,43 +78,19 @@ const LatestOrders = props => {
               <TableHead>
                 <TableRow>
                   <TableCell>Cliente</TableCell>
-                  <TableCell sortDirection="desc">
-                    <Tooltip
-                      enterDelay={300}
-                      title="Sort"
-                    >
-                      <TableSortLabel
-                        active
-                        direction="desc"
-                      >
-                        Data
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell>Serviço</TableCell>
+                  <TableCell>Prestador de serviço</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders.map(order => (
+                {appointments.map(appointment => (
                   <TableRow
                     hover
-                    key={order.id}
-                  >
-                   
-                    <TableCell>{order.customer.name}</TableCell>
-                    <TableCell>
-                      {moment(order.createdAt).format('DD/MM/YYYY')}
-                    </TableCell>
-                    <TableCell>
-                      <div className={classes.statusContainer}>
-                        <StatusBullet
-                          className={classes.status}
-                          color={statusColors[order.status]}
-                          size="sm"
-                        />
-                        {order.status}
-                      </div>
-                    </TableCell>
+                    key={appointment.id}
+                  >                  
+                    <TableCell>{appointment.client.name}</TableCell>
+                    <TableCell>{appointment.serviceEmployee.service.name}</TableCell>
+                    <TableCell>{appointment.serviceEmployee.employee.name}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -129,6 +102,7 @@ const LatestOrders = props => {
       <CardActions className={classes.actions}>
         <Button
           color="primary"
+          onClick={()=> history.push('appointments')}
           size="small"
           variant="text"
         >

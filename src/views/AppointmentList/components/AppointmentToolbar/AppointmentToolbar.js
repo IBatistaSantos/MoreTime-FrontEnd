@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import history from '../../../../services/history'
-import { SearchInput } from 'components';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -50,10 +50,7 @@ const UsersToolbar = props => {
     
       </div>
       <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="Pesquisar agendamento"
-        />
+        <Typography variant="h1">Meus Agendamentos</Typography> 
       </div>
     </div>
   );

@@ -8,5 +8,5 @@ export { default as SignUp } from './SignUp';
 export { default as ForgotPassword } from './ForgotPassword';
 export { default as ResetePassword } from './ResetePassword';
 export { default as BusinessHours } from './BusinessHours';
-export { default as UserList } from './UserList';
+export { default as UserList } from './AppointmentList';
 export { default as Appointments } from './Appointments';
