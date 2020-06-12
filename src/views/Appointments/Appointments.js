@@ -3,11 +3,25 @@ import PropTypes from 'prop-types';
 import api from '../../../src/services/api';
 import {toast} from 'react-toastify'
 import { makeStyles } from '@material-ui/styles';
-import {Select,Grid,TextField, DialogActions, Button, MenuItem,FormControl, Paper, ButtonBase , Typography, Dialog, DialogTitle,DialogContent,DialogContentText } from '@material-ui/core'
+import {Select,Grid,
+  TextField, 
+  DialogActions, 
+  Button, 
+  MenuItem,
+  FormControl, 
+  Paper,
+  ButtonBase , 
+  Typography, 
+  Dialog, 
+  DialogTitle,
+  DialogContent,
+  InputLabel,
+  DialogContentText,
+} from '@material-ui/core'
 import defaultAvatar from '../../assets/defaultAvatar.png'
-import {Form} from '@rocketseat/unform'
+
+
 const useStyles = makeStyles(theme => ({
-  
   row: {
     height: '42px',
     display: 'flex',
@@ -36,6 +50,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row'
   },
+  textField: {
+    marginLeft: '20px'
+  }
 }));
 
 
@@ -66,6 +83,7 @@ export default function AccountHours()  {
   };
 
   const handleClose = () => {
+    setServiceEmployee('')
     setOpen(false);
   };
 
@@ -77,7 +95,7 @@ export default function AccountHours()  {
   
   const handleChange = (event) => {
     api.get(`services/${event.target.value}`).then((response) => {
-      setEmployees(response.data);
+      setEmployees(response.data)
     })
   }
 
@@ -95,14 +113,16 @@ export default function AccountHours()  {
       setFormState([])
       setOpen(false)
     })
-    
-    
   }
+
+  
   return (
     <>
       <div className={classes.row}>
+        <InputLabel id="select-service">Qual serviço deseja ? </InputLabel>
         <Select
           className={classes.searchInput}
+          id="select-service"
           onChange={handleChange}
         >
           {services.map((service) => (
@@ -139,7 +159,7 @@ export default function AccountHours()  {
                       <img
                         alt="complex"
                         className={classes.img}
-                        src={defaultAvatar}
+                        src={employee.employee.avatar ? employee.employee.avatar.url : defaultAvatar}
                       />
                     </ButtonBase>
                   </Grid>
@@ -170,13 +190,13 @@ export default function AccountHours()  {
                           gutterBottom
                           variant="body2"
                         >
-                          {employee.employee.bio}
+                         Biografia: {employee.employee.bio}
                         </Typography>
                         <Typography
                           color="textSecondary"
                           variant="body2"
                         >
-                          {employee.info}
+                         Infomação do serviço: {employee.info}
                         </Typography>
                       </Grid>
                       <Grid item>
@@ -202,63 +222,62 @@ export default function AccountHours()  {
         </Grid>
          
       </div>    
-      
+     
       <Dialog
-        aria-labelledby="appointments-date-hours"
-        maxWidth="sm"
+        disableBackdropClick
+        disableEscapeKeyDown
         onClose={handleClose}
         open={open}
       >
-        <DialogTitle id="appointments-date-hours">Data e Horário do Agendamento</DialogTitle>
+        <DialogTitle>Data e Horário do Agendamento</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Informe a data e horário do agendamento e verificamos a disponibilidade
           </DialogContentText>
-          <Form
-            className={classes.form}
-            onSubmit={handleAddAppointment}
-          >
+          <form className={classes.container}>
             <FormControl className={classes.formControl}>
-             
               <TextField    
                 className={classes.textField}
                 id="date"
                 InputLabelProps={{
                   shrink: true,
                 }}
-                label="Data do Agendamento"
+                label="Data"
                 name="date"
                 onChange={handleChangeForm}
                 type="date"
               />
-
+            </FormControl>
+            <FormControl className={classes.formControl}>
               <TextField
                 className={classes.textField}
+                defaultValue="08:00"
                 id="time"
-                label="Horário do Agendamento"
+                label="Horário"
                 name="timetable"
                 onChange={handleChangeForm}
                 type="time"
-              />
+              /> 
+          
             </FormControl>
-          </Form>
+          </form>
         </DialogContent>
         <DialogActions>
           <Button
             color="primary"
             onClick={handleClose}
           >
-            Fechar
+            Cancelar
           </Button>
           <Button
             color="primary"
             onClick={() => handleAddAppointment(formState.values)}
           >
-            Agendar
+          Agendar
           </Button>
         </DialogActions>
       </Dialog>
-      </>
+  </>
   );
 }
 

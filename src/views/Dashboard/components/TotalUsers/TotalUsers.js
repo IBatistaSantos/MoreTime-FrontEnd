@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
+import api from '../../../../services/api';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 
@@ -41,9 +42,14 @@ const useStyles = makeStyles(theme => ({
 
 const TotalUsers = props => {
   const { className, ...rest } = props;
-
+  const [totalAppointment, setTotalAppointment] = useState()
   const classes = useStyles();
-
+  
+  useEffect(() => {
+    api.get('countToDo').then((response) => {   
+      setTotalAppointment(Number(response.data));     
+    });
+  }, []);
   return (
     <Card
       {...rest}
@@ -61,9 +67,9 @@ const TotalUsers = props => {
               gutterBottom
               variant="body2"
             >
-              TOTAL DE AGENDAMENTO
+              AGENDAMENTO A FAZER
             </Typography>
-            <Typography variant="h3">1,600</Typography>
+            <Typography variant="h3">{totalAppointment}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

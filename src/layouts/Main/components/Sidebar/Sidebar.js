@@ -50,7 +50,8 @@ const Sidebar = props => {
       href: '/appointments',
       icon: <Today />
     },
-    {
+  
+    { 
       title: 'Serviços',
       href: '/services',
       icon: <ShoppingBasketIcon />
@@ -72,6 +73,28 @@ const Sidebar = props => {
     }
   ];
 
+  const pagesClient = [
+    {
+      title: 'Dashboard',
+      href: '/dashboard',
+      icon: <DashboardIcon />
+    },
+    {
+      title: 'Agendamento',
+      href: '/appointments',
+      icon: <Today />
+    },
+    {
+      title: 'Conta',
+      href: '/account',
+      icon: <AccountBoxIcon />
+    },
+    {
+      title: 'Configurações',
+      href: '/settings',
+      icon: <SettingsIcon />
+    }
+  ];
   return (
     <Drawer
       anchor="left"
@@ -88,7 +111,7 @@ const Sidebar = props => {
         <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
-          pages={pages}
+          pages={profile.is_provider ? pages : pagesClient}
         />
         {profile.is_provider ?   <div/>  :  <UpgradePlan/>} 
       </div>

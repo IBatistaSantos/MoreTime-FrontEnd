@@ -45,8 +45,11 @@ export function* passwordProfileUser({payload}) {
   }
 }
 
+
+
+
 export default all([
   takeLatest('@user/UPDATE_PROFILE', updateProfile),
   takeLatest('@user/IS_PROVIDER_USER', isProviderUser),
-  takeLatest('@user/PASSWORD_PROFILE_USER', passwordProfileUser)
+  takeLatest('@user/PASSWORD_PROFILE_USER', passwordProfileUser),
 ]);

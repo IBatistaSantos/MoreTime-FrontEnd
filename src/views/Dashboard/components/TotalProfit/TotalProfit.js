@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-
+import api from '../../../../services/api'
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
@@ -32,9 +32,14 @@ const useStyles = makeStyles(theme => ({
 
 const TotalProfit = props => {
   const { className, ...rest } = props;
-
+  const [totalAppointment, setTotalAppointment] = useState()
   const classes = useStyles();
-
+  
+  useEffect(() => {
+    api.get('countConcluded').then((response) => {   
+      setTotalAppointment(Number(response.data));     
+    });
+  }, []);
   return (
     <Card
       {...rest}
@@ -52,13 +57,13 @@ const TotalProfit = props => {
               gutterBottom
               variant="body2"
             >
-              TOTAL
+              TOTAL DE AGENDAMENTO
             </Typography>
             <Typography
               color="inherit"
               variant="h3"
             >
-              $23,200
+              {totalAppointment}
             </Typography>
           </Grid>
           <Grid item>

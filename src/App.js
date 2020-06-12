@@ -32,6 +32,7 @@ export default class App extends Component {
               <Routes />
             </Router>
             <ToastContainer />
+           
           </ThemeProvider>
         </PersistGate>
       </Provider>

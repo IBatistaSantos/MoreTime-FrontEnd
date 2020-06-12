@@ -138,6 +138,7 @@ const SignIn = props => {
     errors: {}
   });
 
+ 
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -147,7 +148,7 @@ const SignIn = props => {
       errors: errors || {}
     }));
   }, [formState.values]);
-
+  
   const handleBack = () => {
     history.goBack();
   };
@@ -249,6 +250,7 @@ const SignIn = props => {
                 >
                    Esquece minha senha
                 </Link>
+                
                 <Button
                   className={classes.signInButton}
                   color="primary"

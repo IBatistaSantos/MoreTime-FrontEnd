@@ -21,28 +21,19 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 const schema = {
   name: {
     presence: { allowEmpty: false, message: 'é obrigatório' },
-    length: {
-      maximum: 32
-    }
   },
   bio: {
     presence: { allowEmpty: false, message: 'é obrigatório' },
-    length: {
-      maximum: 32
-    }
   },
   email: {
     presence: { allowEmpty: false, message: 'é obrigatório' },
-    email: true,
+    email:  { message: ' não é inválido'},
     length: {
       maximum: 64
     }
   },
   password: {
     presence: { allowEmpty: false, message: 'é obrigatório' },
-    length: {
-      maximum: 128
-    }
   }
 };
 

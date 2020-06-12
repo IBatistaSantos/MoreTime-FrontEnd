@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Typography, Button, colors } from '@material-ui/core';
 import {useDispatch} from 'react-redux';
 import {isProviderUser } from '../../../../../../store/modules/user/actions'
-
+import updatePlanImg from '../../../../../../assets/update_plan.svg'
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: colors.grey[50]
@@ -46,7 +46,7 @@ const UpgradePlan = props => {
       <div className={classes.media}>
         <img
           alt="Seja um funcionário"
-          src="/images/undraw_resume_folder_2_arse.svg"
+          src={updatePlanImg}
         />
       </div>
       <div className={classes.content}>

@@ -31,3 +31,4 @@ export function updateProfileFailure() {
     type: '@auth/SIGN_FAILURE',
   };
 }
+
